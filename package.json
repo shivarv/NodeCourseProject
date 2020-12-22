@@ -1,0 +1,26 @@
+{
+  "name": "nodecourseproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "debug": "node --inspect app.js",
+    "start-server": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivarv/NodeCourseProject.git"
+  },
+  "author": "shiva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivarv/NodeCourseProject/issues"
+  },
+  "homepage": "https://github.com/shivarv/NodeCourseProject#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
