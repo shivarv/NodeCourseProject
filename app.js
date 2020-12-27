@@ -1,23 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 
-app.use('/', (req, res, next) => {
-    console.log('This always runs!');
-    next();
+const adminData = require('./routes/admin');
+const shopRoutes = require('./routes/shop.js');
+
+app.set('view engine', 'pug'); // app.set is to set global configuration item... eg ejs , pug, handlers for dynamic template
+app.set('views', 'views'); // to tell nodejs that this is in views folder , default is same, so its generally not needed
+app.use(bodyParser.urlencoded({extended: false}));
+// any access to files will point to the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/admin", adminData.routes);
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-app.use('/add-product', (req, res, next) => {
-    console.log('In the middleware');
-    res.send('<form action="/product" method="post"><input type="text" name="title"></input><button type="submit">add Product</button></form>');
-});
-
-app.use('/product', (req, res, next) => {
-    console.log('in product '+req.body);
-
-    res.redirect('/');
-});
-app.use('/', (req, res, next) => {
-    console.log('In the middleware');
-    res.send('<h1>Hello from Express!</h1>');
-});
 app.listen(3000);

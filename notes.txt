@@ -1,0 +1,4 @@
+Points:
+
+--save will add dependency for both production and dev
+--save-dev is only for dev dependency eg: nodemon
