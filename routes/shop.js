@@ -10,7 +10,10 @@ router.get('/', (req, res, next) => {
     //./views/shop.html wont work, it thinks of the operating system default directory
     //join method is necessary for working fine for all operating system
     //dirname points to the routes folder
-    res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+    const products = adminData.products;
+    //pub file
+    res.render('shop', {prods: products, docTitle: 'Shop'});
+    //res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 });
 
 
