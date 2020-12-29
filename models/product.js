@@ -20,18 +20,22 @@ const getProductsFromFile = (callback) => {
 };
 
 module.exports = class Product {
-    constructor(title) {
+    constructor(title, imageUrl, description, price) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.price = price;
     }
 
     save() {
+        this.id = Math.random().toString();
         console.log('in save method ');
         console.log(require.main.filename);
         console.log(fullPath);
 
         getProductsFromFile( (products) => {
             console.log('in onsave getProductsFromFile callback method ');
-            console.log(products);
+            //console.log(products);
             products.push(this);
             if(products && products.length > 0) {
                 fs.writeFile(fullPath, JSON.stringify(products), (err) => {
@@ -44,6 +48,15 @@ module.exports = class Product {
     }
 
     static fetchAll(callback) {
+        console.log('in fetchAll method ');
         getProductsFromFile(callback);
     }
-}
+
+    static findById(id, callback) {
+        console.log('in findById method ');
+        getProductsFromFile( products => {
+            const product = products.find(currentProduct => currentProduct.id === id);
+            callback(product);
+        });
+    }
+};
