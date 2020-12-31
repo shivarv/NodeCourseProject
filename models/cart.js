@@ -11,6 +11,21 @@ module.exports = class Cart {
         this.totalPrice = 0;
     }
 
+    static deleteProduct(productId, productPrice) {
+        fs.readFile(fullPath, (err, fileContent) => {
+            if(err || !fileContent || fileContent.length === 0) {
+                return;
+            }
+            //fileContent contains list of data
+            const updatedCart = {...JSON.parse(fileContent)};
+            const product = updatedCart.products.find(prod => prod.id === id);
+            updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
+            updatedCart.totalPrice = updatedCart.totalPrice - product.price * product.qty;
+            fs.writeFile(fullPath, JSON.stringify(updatedCart), (err) => {
+                console.log('error in filewrite in cartjs '+err);
+            });
+        });
+    }
 
     static addProduct(productId, productPrice) {
         fs.readFile(fullPath, (err, fileContent) => {
