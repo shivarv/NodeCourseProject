@@ -53,4 +53,15 @@ module.exports = class Cart {
         // Analyse the cart => Find existing product
         // Add new product / increase quantity
     }
+
+    static getCart(callback) {
+        fs.readFile(fullPath, (err, fileContent) => {
+            const cart = JSON.parse(fileContent);
+            if(err) {
+                callback(err);
+            } else {
+                callback(cart);
+            }
+        });
+    }
 };

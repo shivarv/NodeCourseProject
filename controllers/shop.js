@@ -38,9 +38,20 @@ const getIndex = (req, res, next) => {
 
 const getCart = (req, res, next) => {
     console.log('in getCart method');
-    res.render('shop/cart', {
-        path: '/cart',
-        pageTitle: 'Your Cart'
+    Cart.getCart(cart => {
+        const cartProducts = [];
+        Product.fetchAll(products => {
+            for(let product of products) {
+                const cartProductData = cart.products.find(prod => prod.id === product.id);
+                cartProducts.push({productData: product, qty: cartProductData.qty});
+            }
+        })
+        console.log('cart products '+cartProducts.length);
+        res.render('shop/cart', {
+            path: '/cart',
+            pageTitle: 'Your Cart',
+            products: cartProducts
+        });
     });
 };
 
@@ -50,10 +61,14 @@ const postCart = (req, res, next) => {
     Product.findById(prodId, (product) => {
         Cart.addProduct(prodId, product.price)
     });
+    res.redirect('/cart');
+};
 
-    res.render('shop/cart', {
-        path: '/cart',
-        pageTitle: 'Your Cart'
+const postCartDeleteProduct = (req, res, next) => {
+    const prodId = req.body.productId;
+    Product.findById(prodId, product => {
+        Cart.deleteProduct(prodId, product.price);
+        res.redirect('/cart');
     });
 };
 
@@ -80,5 +95,6 @@ module.exports = {
     getCart : getCart,
     postCart : postCart,
     getCheckout : getCheckout,
-    getOrders : getOrders
+    getOrders : getOrders,
+    postCartDeleteProduct : postCartDeleteProduct
 };
